@@ -21,7 +21,7 @@ development:
   <<: *default
   database: mack-league-dev
   username: <%= MockLeague.credentials[:db_username] %>
-  password: <%= MockLeague.credentials[:db_passowrd] %>
+  password: <%= MockLeague.credentials[:db_password] %>
   host: <%= MockLeague.credentials[:db_host] %>
 
 # Warning: The database defined as "test" will be erased and
@@ -31,7 +31,7 @@ test:
   <<: *default
   database: mock-league-test
   username: <%= MockLeague.credentials[:db_username] %>
-  password: <%= MockLeague.credentials[:db_passowrd] %>
+  password: <%= MockLeague.credentials[:db_password] %>
   host: <%= MockLeague.credentials[:db_host] %>
 
 production:
