@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  pg:
+    image: postgres
+    ports:
+      - 5436:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+  mock-league:
+    build: .
+    container_name: mock-league-container
+    command: bash -c "rm -f tmp/pids/server.pid && rails s -b '0.0.0.0'"
+    volumes:
+      - .:/mock-league
+    ports:
+      - 3000:3000
+    depends_on:
+      - pg
+volumes:
+  pg-data:

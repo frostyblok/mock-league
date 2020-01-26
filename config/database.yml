@@ -10,6 +10,13 @@ default: &default
   encoding: unicode
   timeout: 5000
 
+# Can't find a way to set environment variables on docker yet
+# so one would need to uncomment the code below to run docker locally
+
+#  username: postgres
+#    password: postgres
+#    host: pg
+
 development:
   <<: *default
   database: mack-league-dev
@@ -22,7 +29,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: mock-league-tes
+  database: mock-league-test
   username: <%= MockLeague.credentials[:db_username] %>
   password: <%= MockLeague.credentials[:db_passowrd] %>
   host: <%= MockLeague.credentials[:db_host] %>
