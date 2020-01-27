@@ -12,11 +12,19 @@ RSpec.describe UsersController, type: :controller do
   }
   let(:json) { JSON.parse(response.body) }
 
-  before do
-    post :signup, params: user_params
+  context "#signup" do
+    before { post :signup, params: user_params }
+
+    it "successfully creates a user" do
+      expect(json["message"]).to eq("User successfully created")
+    end
   end
 
-  it "successfully creates a user" do
-    expect(json["message"]).to eq("User successfully created")
+  context "#login" do
+    let(:user) { create(:user) }
+    before { post :signin, params: { email: user.email, password: user.password } }
+    it "successfully signs in a user" do
+      expect(json["message"]).to eq("User successfully signed in")
+    end
   end
 end
