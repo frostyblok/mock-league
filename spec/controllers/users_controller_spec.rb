@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
-  let(:user_params) {
+  let(:user_params) do
     {
       first_name: 'Oluwakunle',
       last_name: 'Fakorede',
@@ -9,22 +11,22 @@ RSpec.describe UsersController, type: :controller do
       password_confirmation: 'ideyhear',
       email: 'oluwa@example.com'
     }
-  }
+  end
   let(:json) { JSON.parse(response.body) }
 
-  context "#signup" do
+  context '#signup' do
     before { post :signup, params: user_params }
 
-    it "successfully creates a user" do
-      expect(json["message"]).to eq("User successfully created")
+    it 'successfully creates a user' do
+      expect(json['message']).to eq('User successfully created')
     end
   end
 
-  context "#login" do
+  context '#login' do
     let(:user) { create(:user) }
     before { post :signin, params: { email: user.email, password: user.password } }
-    it "successfully signs in a user" do
-      expect(json["message"]).to eq("User successfully signed in")
+    it 'successfully signs in a user' do
+      expect(json['message']).to eq('User successfully signed in')
     end
   end
 end

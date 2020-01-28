@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JsonWebToken
   HMAC_SECRET = MockLeague::Application.credentials.secret_key_base
 
@@ -11,7 +13,7 @@ class JsonWebToken
     response = JWT.decode(token, HMAC_SECRET).first
 
     HashWithIndifferentAccess.new(response)
-
-    rescue JWT::DecodeError
+  rescue JWT::DecodeError => e
+    raise json: { message: e, status: 422 }
   end
 end

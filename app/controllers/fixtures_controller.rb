@@ -1,10 +1,16 @@
+# frozen_string_literal: true
+
 class FixturesController < ApplicationController
   before_action :fixture, except: %i[index create]
 
   def index
     fixtures = Fixture.all
 
-    render json: { message: 'All fixtures successfully retrieved', fixtures: fixtures, status: 200 }
+    render json: {
+      message: 'All fixtures successfully retrieved',
+      fixtures: fixtures,
+      status: 200
+    }
   end
 
   def create

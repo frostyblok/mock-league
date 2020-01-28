@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthenticateUser
   def initialize(email:, password:)
     @email = email
@@ -5,7 +7,7 @@ class AuthenticateUser
   end
 
   def call
-    JsonWebToken.encode({ user_id: user.id }) if user
+    JsonWebToken.encode(user_id: user.id) if user
   end
 
   private
@@ -16,7 +18,7 @@ class AuthenticateUser
     user = User.find_by!(email: email)
 
     return user if user&.authenticate(password)
-
-    rescue ActiveRecord::NotFoundError
+  rescue ActiveRecord::NotFoundError => e
+    raise json: { message: e, status: 400 }
   end
 end
