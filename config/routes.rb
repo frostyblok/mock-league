@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   post "/users/signin" => "users#signin"
 
   resources :teams
+  resources :fixtures
 end
