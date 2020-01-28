@@ -1,5 +1,11 @@
 class TeamsController < ApplicationController
-  before_action :team, except: [:create]
+  before_action :team, except: %i[index create]
+
+  def index
+    teams = Team.all
+
+    render json: { message: "All teams successfully retrieved", teams: teams, status: 200 }
+  end
 
   def create
     new_team = Team.create!(team_params)

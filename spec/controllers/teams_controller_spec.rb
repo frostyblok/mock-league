@@ -11,6 +11,15 @@ RSpec.describe TeamsController, type: :controller do
     expect(json["status"]).to eq(status)
   end
 
+  context "#index" do
+    before { get :index }
+
+    it "successfully returns all teams" do
+      expect(json["message"]).to eq("All teams successfully retrieved")
+      expect(json["teams"]).to eq(Team.all)
+    end
+  end
+
   context "#create" do
     before { post :create, params: { name: my_team } }
 
