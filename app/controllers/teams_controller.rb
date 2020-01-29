@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TeamsController < ApplicationController
-  before_action :authorize_admin
+  before_action :authorize_admin, except: %i[index show]
   before_action :team, except: %i[index create]
 
   def index

@@ -4,5 +4,9 @@ Rails.application.routes.draw do
   post "/users/signin" => "users#signin"
 
   resources :teams
-  resources :fixtures
+  resources :fixtures do
+    get 'completed_fixtures', on: :collection
+    get 'pending_fixtures', on: :collection
+    put 'update_scores', on: :member
+  end
 end
