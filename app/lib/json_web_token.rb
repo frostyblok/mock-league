@@ -13,7 +13,7 @@ class JsonWebToken
     response = JWT.decode(token, HMAC_SECRET).first
 
     HashWithIndifferentAccess.new(response)
-  rescue JWT::DecodeError => e
-    raise json: { message: e, status: 422 }
+  rescue JWT::DecodeError
+    raise ExceptionHandler::InvalidToken, 'Invalid token'
   end
 end

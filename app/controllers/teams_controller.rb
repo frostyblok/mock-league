@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class TeamsController < ApplicationController
+  before_action :authorize_admin
   before_action :team, except: %i[index create]
 
   def index
     teams = Team.all
 
-    render json: { message: 'All teams successfully retrieved',
+    render json: { message: message(context: teams, subject: 'teams'),
                    teams: teams, status: 200 }
   end
 

@@ -15,10 +15,9 @@ class AuthenticateUser
   attr_reader :email, :password
 
   def user
-    user = User.find_by!(email: email)
-
+    user = User.find_by(email: email)
     return user if user&.authenticate(password)
-  rescue ActiveRecord::NotFoundError => e
-    raise json: { message: e, status: 400 }
+
+    raise ExceptionHandler::AuthenticationError, 'Invalid credentials'
   end
 end

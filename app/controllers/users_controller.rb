@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  skip_before_action :authorize_request!
+
   def signup
     new_user = User.create!(signup_params)
 
@@ -31,7 +33,7 @@ class UsersController < ApplicationController
 
   def signup_params
     params.permit(
-      :first_name, :last_name, :email, :password, :password_confirmation
+      :first_name, :last_name, :email, :role, :password, :password_confirmation
     )
   end
 end

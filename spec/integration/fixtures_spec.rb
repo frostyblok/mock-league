@@ -2,11 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe FixturesController, type: :controller do
-  let(:fixture) { create(:fixture) }
+RSpec.describe FixturesController, type: :request do
+  let(:user) { create(:user, role: 'admin') }
+  let!(:fixture) { create(:fixture) }
   let(:home_team) { create(:team) }
   let(:away_team) { create(:team, name: 'Arsenal') }
   let(:json) { JSON.parse(response.body) }
+  let(:headers) do
+    {
+      'Authorization' => generate_token(user.id),
+      'Content-Type' => 'application/json'
+    }
+  end
 
   def assert_success(message:, home_team:, away_team:, fixture_date:, status:)
     expect(json['message']).to eq(message)
@@ -17,27 +24,29 @@ RSpec.describe FixturesController, type: :controller do
   end
 
   context '#index' do
-    before { get :index }
+    before { get '/fixtures', params: {}, headers: headers }
 
     it 'successfully returns all fixtures' do
       expect(json['message']).to eq('All fixtures successfully retrieved')
-      expect(json['fixtures']).to eq(Fixture.all)
+      expect(json['fixtures'].size).to eq(Fixture.all.size)
     end
   end
 
   context '#create' do
     let(:fixture_date) { Time.parse('Dec 8 2015 10:19') }
     before do
-      post :create, params: {
-        home_team_id: home_team.id,
-        away_team_id: away_team.id,
-        date: fixture_date
-      }
+      post '/fixtures',
+           params: {
+             home_team_id: home_team.id,
+             away_team_id: away_team.id,
+             date: fixture_date
+           }.to_json,
+           headers: headers
     end
 
     it 'successfully creates a new fixture' do
       assert_success(
-        message: 'Team created successfully',
+        message: 'Fixture created successfully',
         home_team: home_team,
         away_team: away_team, status: 201,
         fixture_date: fixture_date
@@ -46,7 +55,7 @@ RSpec.describe FixturesController, type: :controller do
   end
 
   context '#show' do
-    before { get :show, params: { id: fixture.id } }
+    before { get "/fixtures/#{fixture.id}", params: {}, headers: headers }
 
     it 'successfully creates a new fixture' do
       assert_success(
@@ -62,7 +71,15 @@ RSpec.describe FixturesController, type: :controller do
   context '#update' do
     let(:away_team) { create(:team, name: 'updata') }
     let(:fixture_date) { Time.parse('Dec 18 2016 10:19') }
-    before { put :update, params: { id: fixture.id, home_team_id: home_team.id, away_team_id: away_team.id, date: fixture_date } }
+    before do
+      put "/fixtures/#{fixture.id}",
+          params: {
+            home_team_id: home_team.id,
+            away_team_id: away_team.id,
+            date: fixture_date
+          }.to_json,
+          headers: headers
+    end
 
     it 'successfully creates a new fixture' do
       assert_success(
@@ -76,12 +93,22 @@ RSpec.describe FixturesController, type: :controller do
   end
 
   context '#destroy' do
-    before { post :destroy, params: { id: fixture.id } }
+    before { delete "/fixtures/#{fixture.id}", params: {}, headers: headers }
 
     it 'successfully creates a new fixture' do
       expect(json['message']).to eq('Team successfully deleted')
       expect(json['status']).to eq(204)
       expect(Fixture.exists?(fixture.id)).to eq(false)
+    end
+  end
+
+  context 'when a non admin user' do
+    let(:user) { create(:user) }
+
+    before { get '/fixtures', params: {}, headers: headers }
+
+    it 'returns error' do
+      expect(json['error']).to eq('You are not authorized to perform action')
     end
   end
 end
