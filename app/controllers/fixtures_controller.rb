@@ -1,17 +1,31 @@
 # frozen_string_literal: true
 
 class FixturesController < ApplicationController
-  before_action :authorize_admin
-  before_action :fixture, except: %i[index create]
+  before_action :authorize_admin,
+                except: %i[completed_fixtures pending_fixtures]
+  before_action :fixture,
+                except: %i[index create completed_fixtures pending_fixtures]
 
   def index
-    fixtures = Fixture.all
+    fixture = Fixture.all
 
     render json: {
-      message: message(context: fixtures, subject: 'fixtures'),
-      fixtures: fixtures,
+      message: message(context: fixture, subject: 'fixtures'),
+      fixtures: fixture,
       status: 200
     }
+  end
+
+  def completed_fixtures
+    completed_fixtures = Fixture.completed_fixtures
+
+    result_response(subject: 'completed fixtures', result: completed_fixtures)
+  end
+
+  def pending_fixtures
+    pending_fixtures = Fixture.pending_fixtures
+
+    result_response(subject: 'pending fixtures', result: pending_fixtures)
   end
 
   def create
@@ -48,6 +62,18 @@ class FixturesController < ApplicationController
     }
   end
 
+  def update_scores
+    fixture.update!(fixture_scores_params)
+
+    render json: {
+      message: 'Scores successfully updated',
+      home_team_score: fixture.home_team_score,
+      away_team_score: fixture.away_team_score,
+      completed: fixture.completed,
+      status: 202
+    }
+  end
+
   def destroy
     fixture.destroy
 
@@ -62,5 +88,18 @@ class FixturesController < ApplicationController
 
   def fixture_params
     params.permit(:home_team_id, :away_team_id, :date)
+  end
+
+  def fixture_scores_params
+    params.permit(:home_team_score, :away_team_score, :completed)
+  end
+
+  def result_response(result:, subject:)
+    render json: {
+      message: message(context: result,
+                       subject: subject),
+      fixtures: result,
+      status: 200
+    }
   end
 end
