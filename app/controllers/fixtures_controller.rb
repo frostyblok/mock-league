@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class FixturesController < ApplicationController
+  before_action :authorize_admin
   before_action :fixture, except: %i[index create]
 
   def index
     fixtures = Fixture.all
 
     render json: {
-      message: 'All fixtures successfully retrieved',
+      message: message(context: fixtures, subject: 'fixtures'),
       fixtures: fixtures,
       status: 200
     }
@@ -17,7 +18,7 @@ class FixturesController < ApplicationController
     new_fixture = Fixture.where(fixture_params).first_or_create!
 
     render json: {
-      message: 'Team created successfully',
+      message: 'Fixture created successfully',
       home_team: new_fixture.home_team.name,
       away_team: new_fixture.away_team.name,
       date: new_fixture.date,
@@ -28,9 +29,9 @@ class FixturesController < ApplicationController
   def show
     render json: {
       message: 'Successfully retrieved fixture',
-      home_team: @fixture.home_team.name,
-      away_team: @fixture.away_team.name,
-      date: @fixture.date,
+      home_team: fixture.home_team.name,
+      away_team: fixture.away_team.name,
+      date: fixture.date,
       status: 200
     }
   end
@@ -40,15 +41,15 @@ class FixturesController < ApplicationController
 
     render json: {
       message: 'Fixture successfully updated',
-      home_team: @fixture.home_team.name,
-      away_team: @fixture.away_team.name,
-      date: @fixture.date,
+      home_team: fixture.home_team.name,
+      away_team: fixture.away_team.name,
+      date: fixture.date,
       status: 204
     }
   end
 
   def destroy
-    @fixture.destroy
+    fixture.destroy
 
     render json: { message: 'Team successfully deleted', status: 204 }
   end

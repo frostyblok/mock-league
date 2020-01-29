@@ -15,7 +15,11 @@ RSpec.describe AuthenticateUser do
     context 'when invalid password' do
       let(:password) { 'Invalid_password' }
       it 'returns nil' do
-        expect(token).to be_nil
+        expect { token }
+          .to raise_error(
+                ExceptionHandler::AuthenticationError,
+                /Invalid credentials/
+              )
       end
     end
   end

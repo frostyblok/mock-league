@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe TeamsController, type: :request do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, role: 'admin') }
   let!(:team) { create(:team) }
   let(:my_team) { 'Chelsea' }
   let(:json) { JSON.parse(response.body) }
@@ -62,6 +62,16 @@ RSpec.describe TeamsController, type: :request do
     it 'successfully creates a new team' do
       assert_success(message: 'Team successfully deleted', status: 204)
       expect(Team.exists?(team.id)).to eq(false)
+    end
+  end
+
+  context 'when a non admin user' do
+    let(:user) { create(:user) }
+
+    before { get '/teams', params: {}, headers: headers }
+
+    it 'returns error' do
+      expect(json['error']).to eq('You are not authorized to perform action')
     end
   end
 end

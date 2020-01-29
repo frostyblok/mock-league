@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe FixturesController, type: :request do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, role: 'admin') }
   let!(:fixture) { create(:fixture) }
   let(:home_team) { create(:team) }
   let(:away_team) { create(:team, name: 'Arsenal') }
@@ -99,6 +99,16 @@ RSpec.describe FixturesController, type: :request do
       expect(json['message']).to eq('Team successfully deleted')
       expect(json['status']).to eq(204)
       expect(Fixture.exists?(fixture.id)).to eq(false)
+    end
+  end
+
+  context 'when a non admin user' do
+    let(:user) { create(:user) }
+
+    before { get '/fixtures', params: {}, headers: headers }
+
+    it 'returns error' do
+      expect(json['error']).to eq('You are not authorized to perform action')
     end
   end
 end
