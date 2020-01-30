@@ -7,7 +7,7 @@ class SearchController < ApplicationController
     render json: {
       message: message(context: team, subject: 'teams'),
       team: team.first,
-      fixtures: team.first.fixtures,
+      fixtures: team.first&.fixtures,
       status: 200
     }
   end
