@@ -1,24 +1,23 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+![](https://github.com/frostyblok/mock-league/workflows/CI/badge.svg)
+
+
 
 Things you may want to cover:
 
 * Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
+ 
+      2.6.5
 
 * Database initialization
 
+      rake db:setup
+
 * How to run the test suite
+        
+      rake spec
 
 * Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-
-* ...
+      redis
