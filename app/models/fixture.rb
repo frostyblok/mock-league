@@ -2,7 +2,7 @@
 
 class Fixture < ApplicationRecord
   validates_presence_of :home_team_id, :away_team_id, :date
-  validates_inclusion_of :completed, in: %w[done pending]
+  validates_inclusion_of :status, in: %w[done pending]
 
   before_save :format_date!
   before_create :set_fixture_link
@@ -10,8 +10,8 @@ class Fixture < ApplicationRecord
   belongs_to :home_team, class_name: 'Team', foreign_key: :home_team_id
   belongs_to :away_team, class_name: 'Team', foreign_key: :away_team_id
 
-  scope :completed_fixtures, -> { where(completed: 'done') }
-  scope :pending_fixtures, -> { where(completed: 'pending') }
+  scope :completed_fixtures, -> { where(status: 'done') }
+  scope :pending_fixtures, -> { where(status: 'pending') }
 
   def teams
     [home_team, away_team]

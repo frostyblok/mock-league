@@ -33,7 +33,7 @@ RSpec.describe FixturesController, type: :request do
   end
 
   context '#completed_fixtures' do
-    let(:fixture) { create(:fixture, completed: 'done') }
+    let(:fixture) { create(:fixture, status: 'done') }
 
     before { get '/fixtures/completed_fixtures', params: {}, headers: headers }
 

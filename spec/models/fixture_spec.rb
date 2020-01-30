@@ -10,13 +10,13 @@ RSpec.describe Fixture, type: :model do
   it { should belong_to(:away_team) }
 
   context 'validates presence of completed' do
-    let(:fixture) { create(:fixture, completed: 'no') }
+    let(:fixture) { create(:fixture, status: 'no') }
 
     it 'raises a record invalid error' do
       expect { fixture }
         .to raise_error(
               ActiveRecord::RecordInvalid,
-              /Validation failed: Completed is not included in the list/
+              /Validation failed: Status is not included in the list/
             )
     end
   end
