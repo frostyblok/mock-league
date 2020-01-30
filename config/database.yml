@@ -36,4 +36,4 @@ test:
 
 production:
   <<: *default
-  database: mock-league-prod
+  database: <%= Rails.application.credentials.dig :db_url %>
