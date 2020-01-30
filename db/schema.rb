@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_29_205255) do
+ActiveRecord::Schema.define(version: 2020_01_30_200702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,8 @@ ActiveRecord::Schema.define(version: 2020_01_29_205255) do
     t.datetime "date"
     t.integer "home_team_score"
     t.integer "away_team_score"
-    t.string "completed", default: "pending"
+    t.string "status", default: "pending"
+    t.string "link"
   end
 
   create_table "teams", force: :cascade do |t|

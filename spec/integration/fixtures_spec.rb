@@ -33,7 +33,7 @@ RSpec.describe FixturesController, type: :request do
   end
 
   context '#completed_fixtures' do
-    let(:fixture) { create(:fixture, completed: 'done') }
+    let(:fixture) { create(:fixture, status: 'done') }
 
     before { get '/fixtures/completed_fixtures', params: {}, headers: headers }
 
@@ -94,7 +94,7 @@ RSpec.describe FixturesController, type: :request do
 
   context '#update' do
     let(:away_team) { create(:team, name: 'updata') }
-    let(:fixture_date) { Time.parse('Dec 18 2016 10:19') }
+    let(:fixture_date) { 'Dec 18 2016 10:19' }
     before do
       put "/fixtures/#{fixture.id}",
           params: {
@@ -134,7 +134,6 @@ RSpec.describe FixturesController, type: :request do
           params: {
             home_team_score: home_result,
             away_team_score: away_result,
-            completed: 'done'
           }.to_json,
           headers: headers
     end

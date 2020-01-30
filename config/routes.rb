@@ -9,4 +9,6 @@ Rails.application.routes.draw do
     get 'pending_fixtures', on: :collection
     put 'update_scores', on: :member
   end
+
+  get '/search' => "search#index"
 end

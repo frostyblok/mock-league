@@ -7,11 +7,11 @@ class FixturesController < ApplicationController
                 except: %i[index create completed_fixtures pending_fixtures]
 
   def index
-    fixture = Fixture.all
+    fixtures = Fixture.all
 
     render json: {
-      message: message(context: fixture, subject: 'fixtures'),
-      fixtures: fixture,
+      message: message(context: fixtures, subject: 'fixtures'),
+      fixtures: fixtures,
       status: 200
     }
   end
@@ -63,13 +63,13 @@ class FixturesController < ApplicationController
   end
 
   def update_scores
-    fixture.update!(fixture_scores_params)
+    fixture.update!(fixture_scores_params.merge('status' => 'done'))
 
     render json: {
       message: 'Scores successfully updated',
       home_team_score: fixture.home_team_score,
       away_team_score: fixture.away_team_score,
-      completed: fixture.completed,
+      completed: fixture.status,
       status: 202
     }
   end
@@ -91,7 +91,7 @@ class FixturesController < ApplicationController
   end
 
   def fixture_scores_params
-    params.permit(:home_team_score, :away_team_score, :completed)
+    params.permit(:home_team_score, :away_team_score)
   end
 
   def result_response(result:, subject:)
