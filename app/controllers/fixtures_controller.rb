@@ -7,11 +7,11 @@ class FixturesController < ApplicationController
                 except: %i[index create completed_fixtures pending_fixtures]
 
   def index
-    fixture = Fixture.all
+    fixtures = Fixture.all
 
     render json: {
-      message: message(context: fixture, subject: 'fixtures'),
-      fixtures: fixture,
+      message: message(context: fixtures, subject: 'fixtures'),
+      fixtures: fixtures,
       status: 200
     }
   end

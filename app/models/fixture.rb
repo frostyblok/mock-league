@@ -9,4 +9,8 @@ class Fixture < ApplicationRecord
 
   scope :completed_fixtures, -> { where(completed: 'done') }
   scope :pending_fixtures, -> { where(completed: 'pending') }
+
+  def teams
+    [home_team, away_team]
+  end
 end
