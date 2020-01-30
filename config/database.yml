@@ -20,9 +20,9 @@ default: &default
 development:
   <<: *default
   database: mack-league-dev
-  username: <%= MockLeague.credentials[:db_username] %>
-  password: <%= MockLeague.credentials[:db_password] %>
-  host: <%= MockLeague.credentials[:db_host] %>
+  username: <%= Rails.application.credentials.dig :db_username %>
+  password: <%= Rails.application.credentials.dig :db_password %>
+  host: <%= Rails.application.credentials.dig :db_host %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -30,9 +30,9 @@ development:
 test:
   <<: *default
   database: mock-league-test
-  username: <%= MockLeague.credentials[:db_username] %>
-  password: <%= MockLeague.credentials[:db_password] %>
-  host: <%= MockLeague.credentials[:db_host] %>
+  username: <%= Rails.application.credentials.dig :db_username %>
+  password: <%= Rails.application.credentials.dig :db_password %>
+  host: <%= Rails.application.credentials.dig :db_host %>
 
 production:
   <<: *default
