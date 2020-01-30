@@ -134,7 +134,6 @@ RSpec.describe FixturesController, type: :request do
           params: {
             home_team_score: home_result,
             away_team_score: away_result,
-            completed: 'done'
           }.to_json,
           headers: headers
     end

@@ -63,7 +63,7 @@ class FixturesController < ApplicationController
   end
 
   def update_scores
-    fixture.update!(fixture_scores_params)
+    fixture.update!(fixture_scores_params.merge('completed' => 'done'))
 
     render json: {
       message: 'Scores successfully updated',
@@ -91,7 +91,7 @@ class FixturesController < ApplicationController
   end
 
   def fixture_scores_params
-    params.permit(:home_team_score, :away_team_score, :completed)
+    params.permit(:home_team_score, :away_team_score)
   end
 
   def result_response(result:, subject:)
