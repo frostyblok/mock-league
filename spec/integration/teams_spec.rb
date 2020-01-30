@@ -64,14 +64,4 @@ RSpec.describe TeamsController, type: :request do
       expect(Team.exists?(team.id)).to eq(false)
     end
   end
-
-  context 'when a non admin user' do
-    let(:user) { create(:user) }
-
-    before { get '/teams', params: {}, headers: headers }
-
-    it 'returns error' do
-      expect(json['error']).to eq('You are not authorized to perform action')
-    end
-  end
 end

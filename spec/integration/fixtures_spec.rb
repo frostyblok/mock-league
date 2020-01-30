@@ -94,7 +94,7 @@ RSpec.describe FixturesController, type: :request do
 
   context '#update' do
     let(:away_team) { create(:team, name: 'updata') }
-    let(:fixture_date) { Time.parse('Dec 18 2016 10:19') }
+    let(:fixture_date) { 'Dec 18 2016 10:19' }
     before do
       put "/fixtures/#{fixture.id}",
           params: {
