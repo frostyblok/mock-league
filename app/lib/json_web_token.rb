@@ -17,3 +17,4 @@ class JsonWebToken
     raise ExceptionHandler::InvalidToken, 'Invalid token'
   end
 end
+
